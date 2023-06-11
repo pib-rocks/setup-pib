@@ -6,30 +6,31 @@
 #
 DEFAULT_USER="pib"
 USER_HOME="/home/$DEFAULT_USER"
-ROS_WORKING_DIR="$USER_HOME/ros_working_dir"
+TMP_DIR="$USER_HOME/setup_tmp"
+ROS_WORKSPACE="$USER_HOME/ros2_ws"
 DEFAULT_NGINX_DIR="/etc/nginx"
 DEFAULT_NGINX_HTML_DIR="$DEFAULT_NGINX_DIR/html"
 NGINX_CONF_FILE="nginx.conf"
 NGINX_CONF_FILE_URL="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/nginx.conf"
 #
-CEREBRA_ARCHIVE_URL_PATH="https://pib.rocks/wp-content/uploads/pib_data/cerebra-latest.zip"
+CEREBRA_ARCHIVE_URL="https://pib.rocks/wp-content/uploads/pib_data/cerebra-latest.zip"
 CEREBRA_ARCHIVE_NAME="cerebra-latest.zip"
 #
-ROS_CAMERA_NODE_LINK="https://github.com/pib-rocks/ros2_oak_d_lite/archive/refs/heads/master.zip"
-ROS_CAMERA_NODE_DIR="$ROS_WORKING_DIR/ros_camera_node_dir"
+ROS_CAMERA_NODE_URL="https://github.com/pib-rocks/ros2_oak_d_lite/archive/refs/heads/master.zip"
+ROS_CAMERA_NODE_DIR="$ROS_WORKSPACE/oak-d-camera_node"
 ROS_CAMERA_NODE_ZIP="ros_camera_node.zip"
-ROS_CEREBRA_BOOT_LINK="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/ros_cerebra_boot.sh"
-ROS_CAMERA_NODE_BOOT_LINK="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/ros_camera_boot.sh"
-ROS_CEREBRA_BOOT_SERVICE_LINK="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/ros_cerebra_boot.service"
-ROS_CAMERA_NODE_BOOT_SERVICE_LINK="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/ros_camera_boot.service"
+ROS_CEREBRA_BOOT_URL="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/ros_cerebra_boot.sh"
+ROS_CAMERA_NODE_BOOT_URL="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/ros_camera_boot.sh"
+ROS_CEREBRA_BOOT_SERVICE_URL="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/ros_cerebra_boot.service"
+ROS_CAMERA_NODE_BOOT_SERVICE_URL="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/ros_camera_boot.service"
 #
-PHPLITEADMIN_LINK="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/phpliteadmin_v1_9_9_dev.zip"
+PHPLITEADMIN_URL="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/phpliteadmin_v1_9_9_dev.zip"
 PHPLITEADMIN_ZIP="phpliteadmin_v1_9_9_dev.zip"
 PHPLITEADMIN_INSTALLATION_DIR="/var/www/phpliteadmin"
 DATABASE_DIR="$USER_HOME/pib_data"
 DATABASE_FILE="pibdata.db"
 DATABASE_INIT_QUERY_FILE="cerebra_init_database.sql"
-DATABASE_INIT_QUERY_LINK="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/cerebra_init_database.sql"
+DATABASE_INIT_QUERY_URL="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup_files/cerebra_init_database.sql"
 
 # We make sure that this script is run by the user "pib"
 if [ "$(whoami)" != "pib" ]; then
@@ -110,15 +111,16 @@ if [ ! -d $DEFAULT_NGINX_HTML_DIR ]; then sudo -S mkdir -p $DEFAULT_NGINX_HTML_D
 echo -e '\nClean up the html directory...'
 cd $DEFAULT_NGINX_HTML_DIR && sudo -S rm -r * 
 cd $USER_HOME
-mkdir $ROS_WORKING_DIR
+mkdir $ROS_WORKSPACE
+mkdir $TMP_DIR
 # Download Cerebra artifact to the working directory
 echo -e '\nDownloading Cerebra application'
-curl $CEREBRA_ARCHIVE_URL_PATH -L --output $ROS_WORKING_DIR/$CEREBRA_ARCHIVE_NAME
+curl $CEREBRA_ARCHIVE_URL -L --output $TMP_DIR/$CEREBRA_ARCHIVE_NAME
 #
 # Unzip cerebra files to nginx
 echo -e '\nUnzip cerebra...'
 #cd $RASP_TMP_FOLDER
-sudo unzip $ROS_WORKING_DIR/$CEREBRA_ARCHIVE_NAME -d $DEFAULT_NGINX_HTML_DIR
+sudo unzip $TMP_DIR/$CEREBRA_ARCHIVE_NAME -d $DEFAULT_NGINX_HTML_DIR
 #
 # Setting up nginx to serve Cerebra locally
 echo -e '\nDownloading nginx configuration file...'
@@ -126,45 +128,44 @@ sudo curl $NGINX_CONF_FILE_URL --output $DEFAULT_NGINX_DIR/$NGINX_CONF_FILE
 #
 # Install ros node for camera
 echo -e '\nInstalling ros node for camera...'
-curl $ROS_CAMERA_NODE_LINK -L --output $ROS_WORKING_DIR/$ROS_CAMERA_NODE_ZIP
-sudo unzip $ROS_WORKING_DIR/$ROS_CAMERA_NODE_ZIP -d $ROS_CAMERA_NODE_DIR
-rm $ROS_WORKING_DIR/$ROS_CAMERA_NODE_ZIP
+curl $ROS_CAMERA_NODE_URL -L --output $TMP_DIR/$ROS_CAMERA_NODE_ZIP
+sudo unzip $TMP_DIR/$ROS_CAMERA_NODE_ZIP -d $ROS_CAMERA_NODE_DIR
 cd $ROS_CAMERA_NODE_DIR
 sudo colcon build
 #
 # Install and configure phpLiteAdmin
 sudo sed -i "s|;cgi.fix_pathinfo=1|cgi.fix_pathinfo=0|" /etc/php/8.1/fpm/php.ini
-curl $PHPLITEADMIN_LINK -L --output $ROS_WORKING_DIR/$PHPLITEADMIN_ZIP
+curl $PHPLITEADMIN_URL -L --output $TMP_DIR/$PHPLITEADMIN_ZIP
 sudo mkdir $PHPLITEADMIN_INSTALLATION_DIR
 sudo chown -R www-data:www-data $PHPLITEADMIN_INSTALLATION_DIR
 sudo chmod -R 755 $PHPLITEADMIN_INSTALLATION_DIR
-sudo unzip $ROS_WORKING_DIR/$PHPLITEADMIN_ZIP -d $PHPLITEADMIN_INSTALLATION_DIR
+sudo unzip $TMP_DIR/$PHPLITEADMIN_ZIP -d $PHPLITEADMIN_INSTALLATION_DIR
 sudo systemctl restart php8.1-fpm
 # Create the database (if it doesn't exist) and initialize it with the SQL file
-curl $DATABASE_INIT_QUERY_LINK -L --output $ROS_WORKING_DIR/$DATABASE_INIT_QUERY_FILE
-echo "Creating (if not exist) and initializing SQLite database $DATABASE_FILE with $ROS_WORKING_DIR/$DATABASE_INIT_QUERY_FILE..."
+curl $DATABASE_INIT_QUERY_URL -L --output $TMP_DIR/$DATABASE_INIT_QUERY_FILE
+echo "Creating (if not exist) and initializing SQLite database $DATABASE_FILE with $TMP_DIR/$DATABASE_INIT_QUERY_FILE..."
 mkdir $DATABASE_DIR
 sudo chmod 777 $USER_HOME
 sudo chmod 777 $DATABASE_DIR
-sudo sqlite3 $DATABASE_DIR/$DATABASE_FILE < $ROS_WORKING_DIR/$DATABASE_INIT_QUERY_FILE
+sudo sqlite3 $DATABASE_DIR/$DATABASE_FILE < $TMP_DIR/$DATABASE_INIT_QUERY_FILE
 sudo chmod 766 $DATABASE_DIR/$DATABASE_FILE
 echo -e "\nDatabase initialized successfully!"
 #
 # Setup system to start Cerebra and ROS2 at boot time
 # Create boot script for ros_bridge_server
-curl $ROS_CEREBRA_BOOT_LINK -L --output $ROS_WORKING_DIR/ros_cerebra_boot.sh
-sudo chmod 755 $ROS_WORKING_DIR/ros_cerebra_boot.sh
+curl $ROS_CEREBRA_BOOT_URL -L --output $ROS_WORKSPACE/ros_cerebra_boot.sh
+sudo chmod 755 $ROS_WORKSPACE/ros_cerebra_boot.sh
 # Create boot script for ros_camera node
-curl $ROS_CAMERA_NODE_BOOT_LINK -L --output $ROS_WORKING_DIR/ros_camera_node_boot.sh
-sudo chmod 755 $ROS_WORKING_DIR/ros_camera_boot.sh
+curl $ROS_CAMERA_NODE_BOOT_URL -L --output $ROS_WORKSPACE/ros_camera_node_boot.sh
+sudo chmod 755 $ROS_WORKSPACE/ros_camera_boot.sh
 # Create service which starts ros and cerebra by system boot
-curl $ROS_CEREBRA_BOOT_SERVICE_LINK -L --output $ROS_WORKING_DIR/ros_cerebra_boot.service
-sudo chmod 755 $ROS_WORKING_DIR/ros_cerebra_boot.service
-sudo mv $ROS_WORKING_DIR/ros_cerebra_boot.service /etc/systemd/system
+curl $ROS_CEREBRA_BOOT_SERVICE_URL -L --output $TMP_DIR/ros_cerebra_boot.service
+sudo chmod 755 $ROS_WORKSPACE/ros_cerebra_boot.service
+sudo mv $TMP_DIR/ros_cerebra_boot.service /etc/systemd/system
 # Create service which starts ros camera node by system boot
-curl $ROS_CAMERA_NODE_BOOT_SERVICE_LINK -L --output $ROS_WORKING_DIR/ros_camera_boot.service
-sudo chmod 755 $ROS_WORKING_DIR/ros_camera_boot.service
-sudo mv $ROS_WORKING_DIR/ros_camera_boot.service /etc/systemd/system
+curl $ROS_CAMERA_NODE_BOOT_SERVICE_URL -L --output $TMP_DIR/ros_camera_boot.service
+sudo chmod 755 $TMP_DIR/ros_camera_boot.service
+sudo mv $ROS_WORKSPACE/ros_camera_boot.service /etc/systemd/system
 # Enable new services
 sudo systemctl daemon-reload
 sudo systemctl enable ros_cerebra_boot.service
