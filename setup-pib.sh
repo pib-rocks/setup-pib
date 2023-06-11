@@ -156,7 +156,7 @@ echo -e "\nDatabase initialized successfully!"
 curl $ROS_CEREBRA_BOOT_URL -L --output $ROS_WORKSPACE/ros_cerebra_boot.sh
 sudo chmod 755 $ROS_WORKSPACE/ros_cerebra_boot.sh
 # Create boot script for ros_camera node
-curl $ROS_CAMERA_NODE_BOOT_URL -L --output $ROS_WORKSPACE/ros_camera_node_boot.sh
+curl $ROS_CAMERA_NODE_BOOT_URL -L --output $ROS_WORKSPACE/ros_camera_boot.sh
 sudo chmod 755 $ROS_WORKSPACE/ros_camera_boot.sh
 # Create service which starts ros and cerebra by system boot
 curl $ROS_CEREBRA_BOOT_SERVICE_URL -L --output $TMP_DIR/ros_cerebra_boot.service
@@ -165,11 +165,11 @@ sudo mv $TMP_DIR/ros_cerebra_boot.service /etc/systemd/system
 # Create service which starts ros camera node by system boot
 curl $ROS_CAMERA_NODE_BOOT_SERVICE_URL -L --output $TMP_DIR/ros_camera_boot.service
 sudo chmod 755 $TMP_DIR/ros_camera_boot.service
-sudo mv $ROS_WORKSPACE/ros_camera_boot.service /etc/systemd/system
+sudo mv $TMP_DIR/ros_camera_boot.service /etc/systemd/system
 # Enable new services
 sudo systemctl daemon-reload
 sudo systemctl enable ros_cerebra_boot.service
-sudo systemctl enable ros_camera_node_boot.service
+sudo systemctl enable ros_camera_boot.service
 # Enable and start ssh server
 sudo systemctl enable ssh --now
 # Done! :-) Please restart to 
