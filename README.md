@@ -12,7 +12,7 @@ If you have not set up the user **pib** at installation, you can do so via the s
 
 To run the script do the next steps:
 
-1. Open a terminal as root user, from a normal user account, become root e.g. via `sudo bash`
+1. Open a terminal as root user (from a normal user account, become root e.g. via `sudo bash`)
 ```
 adduser pib
   -> e.g. password pib, everything else nothing
@@ -23,6 +23,7 @@ git clone https://github.com/pib-rocks/setup-pib
 
 echo 'pib ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/pib"
 
+apt install python3-colcon
 cd setup-pib
 bash setup-pib.sh
  -> Password: (will ask once, so that it can sudo )
