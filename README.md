@@ -23,7 +23,6 @@ git clone https://github.com/pib-rocks/setup-pib
 
 echo 'pib ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/pib"
 
-apt install python3-colcon
 cd setup-pib
 bash setup-pib.sh
  -> Password: (will ask once, so that it can sudo )
