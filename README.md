@@ -1,7 +1,9 @@
 # Software setup
 
-This script assumes: 
+This script assumes (e.g. as a VM in virtualbox): 
 - that Ubuntu Desktop 22.04.2 LTS is installed
+- more than 20GB free disk space
+- at least 12 GB RAM  (gazebo needs memory)
 - the user running it is **pib**
 
 If you have not set up the user **pib** at installation, you can do so via the settings-dialog of Ubuntu and then log in as **pib**.
