@@ -50,3 +50,6 @@ With the following command, you can check the running ros2 nodes:
 
         ros2 node list
 
+## To build a docker image try
+
+docker build . --tag=pib-rocks/setup-pib:latest
