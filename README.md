@@ -10,19 +10,22 @@ If you have not set up the user **pib** at installation, you can do so via the s
 
 To run the script do the next steps:
 
-1. Open a terminal
+1. Open a terminal as root user, from a normal user account, become root e.g. via `sudo bash`
+```
+adduser pib
+  -> e.g. password pib, everything else nothing
+su - pib
+mkdir github; cd github
+git clone https://github.com/pib-rocks/setup-pib
 
-2. Download the script with the following command:
 
-        wget https://raw.githubusercontent.com/pib-rocks/setup-pib/main/setup-pib.sh
+echo 'pib ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/pib"
 
-3. Make the script executable:
-   
-        chmod 755 ./setup-pib.sh
+cd setup-pib
+bash setup-pib.sh
+ -> Password: (will ask once, so that it can sudo )
 
-4. Let the script run:
-
-        ./setup-pib.sh
+```
 
 The setup then adds Cerebra and it's dependencies, including ROS2, Tinkerforge,...
 Once the installation is complete, please restart the system to apply all the changes.
