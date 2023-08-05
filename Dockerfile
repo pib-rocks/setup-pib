@@ -17,5 +17,5 @@ COPY --chown=pib:pib setup-pib.sh /home/pib
 # e.g. DEBIAN_FRONTEND=noninteractive does not help to overcome tzdata.
 # Thus we install tzdata earlier, where we have better control...
 
-RUN env DEBIAN_FRONTEND=noninteractive bash -x /home/pib/setup-pib.sh
+RUN env DEBIAN_FRONTEND=noninteractive bash -e /home/pib/setup-pib.sh
 
