@@ -41,6 +41,8 @@ Once the installation is complete, please restart the system to apply all the ch
 To check if ROS2, nginx and the camera node have successfully started:
 
 	`sudo bash ./pib_up_services.sh`
+	
+	The camera service okay expected to fail, when no camera is connected.
 
 With the following command, you can check the running ros2 nodes:
 
