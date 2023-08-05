@@ -13,8 +13,8 @@ if grep -q "^source $source_cmd" ~/.bashrc; then
 	exit 1
 fi
 
-mkdir ~/motor_control_ws
-cd motor_control_ws
+mkdir -p ~/motor_control_ws
+cd ~/motor_control_ws
 git clone https://github.com/mazeninvent/pib-motor_control.git
 colcon build --packages-select cerebra
 cd ..

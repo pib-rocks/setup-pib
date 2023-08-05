@@ -72,9 +72,16 @@ Each of these script print instructions how to run them.
   Cerebra will be available at http://localhost/head
   (To configure motor wiring, see https://github.com/mazeninvent/pib-motor_control/tree/main#readme )
 
-# To build a docker image try
+# Build and publish a docker image
 
-docker build . --tag=pibrocks/setup-pib:latest
-docker login -u pibrocks
+`docker build . --tag=pibrocks/setup-pib:latest`
+`docker login -u pibrocks`
  Password: ******
-docker push pibrocks/setup-pib:latest
+`docker push pibrocks/setup-pib:latest`
+
+# Run the docker image (with full hardware access on your raspi)
+
+`docker run --rm -ti --privileged pibrocks/setup-pib bash`
+
+And follow the instructions...
+
