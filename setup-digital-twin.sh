@@ -1,3 +1,6 @@
+# CAUTION: keep in sync with https://pib.rocks/build/how-to-install-a-digital-twin-of-pib/
+# CAUTION: This script must only be run after setup-pib.sh succeeded.
+
 sudo apt install ros-humble-ros-ign
 sudo apt install ros-humble-ros2-control 
 sudo apt install ros-humble-ros2-controllers

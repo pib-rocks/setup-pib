@@ -1,10 +1,13 @@
 # Software setup
 
-This script assumes (e.g. as a VM in virtualbox): 
-- that Ubuntu Desktop 22.04.2 LTS is installed
-- more than 20GB free disk space
-- at least 12 GB RAM  (gazebo needs memory)
-- the user running it is **pib**
+### CAUTION: Keep in sync with https://pib.rocks/build/how-to-install-a-digital-twin-of-pib/
+
+The setup-pib.sh script assumes (e.g. as a VM in virtualbox): 
+- That Ubuntu Desktop 22.04.2 LTS is installed
+  E.g. from https://www.releases.ubuntu.com/22.04/ubuntu-22.04.2-desktop-amd64.iso	(4.6 GB)
+- 30GB free disk space
+- 8 GB RAM  (gazebo needs memory)
+- Username is **pib** (see below)
 
 If you have not set up the user **pib** at installation, you can do so via the settings-dialog of Ubuntu and then log in as **pib**.
 

@@ -3,6 +3,7 @@
 #
 # References:
 # - https://docs.docker.com/engine/reference/builder/
+# - https://pib.rocks/build/how-to-install-a-digital-twin-of-pib/
 #
 #
 # Build & publish instructions:
@@ -14,13 +15,14 @@
 # - docker run --rm -ti pibrocks/setup-pib bash
 #  -> look around, and finish the setup.
 
-
-LABEL org.opencontainers.image.authors="juergen@fabmail.org"	# aka MAINTAINER
-LABEL version="0.1 wip"
-LABEL description="A container with just enough PIP infrastructure to run the simulator"
 FROM ubuntu:22.04
 
-EXPOSE 5052/tcp		# hex 0x50 = 'P', 0x52 = 'R'
+LABEL org.opencontainers.image.authors="juergen@fabmail.org"
+LABEL version="0.1 wip"
+LABEL description="A container with just enough PIP infrastructure to run the simulator"
+
+# hex 0x50 = 'P', 0x52 = 'R'
+EXPOSE 5052/tcp
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt install -y curl sudo software-properties-common apt-utils php-fpm
