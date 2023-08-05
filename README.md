@@ -54,8 +54,25 @@ With the following command, you can check the running ros2 nodes:
 	/rosapi_params
 	/rosbridge_websocket
 
+## setup gazebo and motor-control
 
-## To build a docker image try
+`bash setup-digital-twin.sh`
+`bash setup-motor-control.sh`
+
+Each of these script print instructions how to run them.
+
+## Run gazebo and/or motor-control
+
+* gazebo
+  Open a new terminal window and run this command: `ros2 launch pib_sim pib.launch.py`
+  Gazebo will open it's GUI.
+
+* motor-control
+  Open a new terminal window and run this command: `ros2 run cerebra motor_control`
+  Cerebra will be available at http://localhost/head
+  (To configure motor wiring, see https://github.com/mazeninvent/pib-motor_control/tree/main#readme )
+
+# To build a docker image try
 
 docker build . --tag=pibrocks/setup-pib:latest
 docker login -u pibrocks
