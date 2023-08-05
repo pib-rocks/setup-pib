@@ -52,4 +52,7 @@ With the following command, you can check the running ros2 nodes:
 
 ## To build a docker image try
 
-docker build . --tag=pib-rocks/setup-pib:latest
+docker build . --tag=pibrocks/setup-pib:latest
+docker login -u pibrocks
+ Password: ******
+docker push pibrocks/setup-pib:latest
