@@ -4,20 +4,29 @@
 #
 # CAUTION: this script expects that setup-pib.sh has already succeeded.
 #
+
+source_cmd=/home/pib/motor_control_ws/install/setup.bash
+run_cmd="ros2 run cerebra motor_control"
+if grep -q "^source $source_cmd" ~/.bashrc; then
+        echo "$0: This script was already run. If you really need to re-run this script, remove the line '$source_cmd' from your ~/.bashrc"
+        echo "To start the motor-control, try: $run_cmd"
+	exit 1
+fi
+
 mkdir ~/motor_control_ws
 cd motor_control_ws
 git clone https://github.com/mazeninvent/pib-motor_control.git
 colcon build --packages-select cerebra
 cd ..
-echo source ~/motor_control_ws/install/setup.bash >> ~/.bashrc
-source ~/motor_control_ws/install/setup.bash
+echo source $source_cmd >> ~/.bashrc
+source $source_cmd
 
 # ros2 run cerebra motor_control
 
 cat <<EOF
 To start this service, open a fresh shell, and do
 
-	ros2 run cerebra motor_control
+	$run_cmd
 
 Motor_control via cereba setup can be reached via http://localhost/head"
 Before using this service, edit 

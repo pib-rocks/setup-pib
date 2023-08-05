@@ -36,6 +36,13 @@ if [ "$(whoami)" != "pib" ]; then
         echo "This script must be run as user: pib"
         exit 255
 fi
+
+source_cmd=/opt/ros/humble/setup.bash
+if grep -q '^source $source_cmd' ~/.bashrc; then
+        echo "$0: This script was already run. If you really need to re-run this scrpt, remove the line 'source $source_cmd' from your ~/.bashrc"
+	exit 1
+fi
+
 # We want the user pib to setup things without password (sudo without password)
 # Yes, we are aware of the security-issues..
 echo "Hello pib! We start the setup by allowing you permanently to run commands with admin-privileges."
@@ -177,3 +184,7 @@ sudo systemctl enable ssh --now
 # Done! :-) Please restart to 
 echo -e '\nCongratulations! The setup completed succesfully!'
 echo -e '\nPlease restart the system to apply changes...'
+
+echo source $source_cmd >> ~/.bashrc
+source $source_cmd
+

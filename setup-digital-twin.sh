@@ -1,6 +1,14 @@
 # CAUTION: keep in sync with https://pib.rocks/build/how-to-install-a-digital-twin-of-pib/
 # CAUTION: This script must only be run after setup-pib.sh succeeded.
 
+source_cmd=/home/pib/ros2_ws/install/setup.bash
+run_cmd="ros2 launch pib_sim pib.launch.py"
+if grep -q "^source $source_cmd" ~/.bashrc; then
+        echo "$0: This script was already run. If you really need to re-run this script, remove the line '$source_cmd' from your ~/.bashrc"
+        echo "To start the digital-twin, try: $run_cmd"
+	exit 1
+fi
+
 sudo apt install -y ros-humble-ros-ign			# 300 MB for gazebo
 sudo apt install -y ros-humble-ros2-control 		# 16 MB
 sudo apt install -y ros-humble-ros2-controllers		# 37 MB
@@ -20,14 +28,12 @@ sudo wget https://pib.rocks/wp-content/uploads/pib_data/pib_sim.zip
 unzip pib_sim.zip && rm -f pib_sim.zip
 cd ..
 colcon build --symlink-install
-echo source /opt/ros/humble/setup.bash >> ~/.bashrc
-echo source ~/ros2_ws/install/setup.bash >> ~/.bashrc
-source /opt/ros/humble/setup.bash
-source ~/ros2_ws/install/setup.bash
+echo "source $source_cmd >> ~/.bashrc
+source $source_cmd
 
 cat <<EOF
 To start this service, open a fresh shell, and do
 
-	ros2 launch pib_sim pib.launch.py 
+	$run_cmd
 
 EOF
