@@ -18,17 +18,17 @@ To run the script do the next steps:
 
 1. Open a terminal as root user (from a normal user account, become root e.g. via `sudo bash`)
 ```
-adduser pib
+`adduser pib`
   -> e.g. password pib, everything else nothing
-su - pib
-mkdir github; cd github
-git clone https://github.com/pib-rocks/setup-pib
+`su - pib`
+`mkdir github; cd github`
+`git clone https://github.com/pib-rocks/setup-pib`
 
 
-echo 'pib ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/pib"
+`echo 'pib ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/pib"`
 
-cd setup-pib
-bash setup-pib.sh
+`cd setup-pib`
+`bash setup-pib.sh`
  -> Password: (will ask once, so that it can sudo )
 
 ```
@@ -40,11 +40,18 @@ Once the installation is complete, please restart the system to apply all the ch
 
 To check if ROS2, nginx and the camera node have successfully started:
 
-	pib_up_services.sh
+	`sudo bash ./pib_up_services.sh`
 
 With the following command, you can check the running ros2 nodes:
 
-        ros2 node list
+        `ros2 node list`
+
+	The output is expected to include
+
+	/rosapi
+	/rosapi_params
+	/rosbridge_websocket
+
 
 ## To build a docker image try
 
