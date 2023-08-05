@@ -5,8 +5,9 @@
 The setup-pib.sh script assumes (e.g. as a VM in virtualbox): 
 - That Ubuntu Desktop 22.04.2 LTS is installed
   E.g. from https://www.releases.ubuntu.com/22.04/ubuntu-22.04.2-desktop-amd64.iso	(4.6 GB)
+  A "Minimal installation" is suficient (web browser and basic utilities)
 - 30GB free disk space
-- 8 GB RAM  (gazebo needs memory)
+- 6 GB RAM  (gazebo needs memory)
 - Username is **pib** (see below)
 
 If you have not set up the user **pib** at installation, you can do so via the settings-dialog of Ubuntu and then log in as **pib**.
@@ -37,17 +38,9 @@ Once the installation is complete, please restart the system to apply all the ch
 
 ## Checking if the software started successfully
 
-To check if ROS2 successfully started:
+To check if ROS2, nginx and the camera node have successfully started:
 
-        systemctl status ros_cerebra_boot.service
-
-To check if Cerebra successfully started:
-
-        sudo systemctl status nginx
-
-To check if the camera node successfully started:
-
-        systemctl status ros_camera_boot.service
+	pib_up_services.sh
 
 With the following command, you can check the running ros2 nodes:
 
