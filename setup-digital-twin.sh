@@ -29,8 +29,7 @@ sudo wget https://pib.rocks/wp-content/uploads/pib_data/pib_sim.zip
 unzip pib_sim.zip && rm -f pib_sim.zip
 cd ..
 colcon build --symlink-install
-echo "source $source_cmd >> ~/.bashrc
-source $source_cmd
+echo "source $source_cmd" >> ~/env
 
 cat <<EOF
 To start this service, open a fresh shell, and do
