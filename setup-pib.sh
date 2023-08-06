@@ -4,7 +4,9 @@
 #   - that Ubuntu Desktop 22.04.2 is installed
 #   - the default-user "pib" is executing it
 #
-# 
+# References:
+#  - https://classic.gazebosim.org/tutorials?tut=gzweb_install&cat=gzweb
+
 set -e	# make the script explode on error.
 
 DEFAULT_USER="pib"
@@ -45,14 +47,6 @@ if grep -q '^source $source_cmd' ~/.bashrc; then
         echo "$0: This script was already run. If you really need to re-run this scrpt, remove the line 'source $source_cmd' from your ~/.bashrc"
 	exit 1
 fi
-
-source2_cmd=/opt/ros/humble/setup.bash
-if [ ! -f ~/env ]; then
-  echo "source $source2_cmd" > ~/env
-fi
-
-if ! grep -q 'source $source2_cmd' ~/env; then
-  echo "source $source2_cmd" >> ~/env
 
 
 # We want the user pib to setup things without password (sudo without password)
@@ -199,3 +193,18 @@ echo -e '\nPlease restart the system to apply changes...'
 
 echo source $source_cmd >> ~/.bashrc
 
+mkdir -p ~/_init_ws/install
+ln -s /opt/ros/humble/setup.bash ~/_init_ws/install
+
+cat <<'EOS' > $source_cmd
+#! /bin/sh 
+
+export LC_COLLATE=C	
+# Just to be safe, tweak collate to have _init_ws before aaa_ws, but after 123_ws
+# We assume the exact order does not matter.
+cd ~
+for sauce in *_ws/install/setup.bash; do
+  echo "... sourcing $sauce"
+  source $sauce
+done
+EOS
