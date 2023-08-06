@@ -32,7 +32,7 @@ Then recompile with:
 
 To start this service, open a fresh shell, and do
 
-	$run_cmd
+	source ~/env; $run_cmd
 
 Motor_control via cereba setup can be reached at http://localhost/head"
 EOF

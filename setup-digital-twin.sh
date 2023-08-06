@@ -1,3 +1,9 @@
+#! /bin/sh
+#
+# Refernces:
+# - https://classic.gazebosim.org/gzweb#install-collapse-0
+#
+#
 # CAUTION: keep in sync with https://pib.rocks/build/how-to-install-a-digital-twin-of-pib/
 # CAUTION: This script must only be run after setup-pib.sh succeeded.
 
@@ -14,6 +20,30 @@ sudo apt install -y ros-humble-ros-ign			# 300 MB for gazebo
 sudo apt install -y ros-humble-ros2-control 		# 16 MB
 sudo apt install -y ros-humble-ros2-controllers		# 37 MB
 sudo apt install -y ros-humble-ign-ros2-control		# 200 kB
+
+# for gzweb
+sudo apt install -y gazebo9 libgazebo9-dev
+sudo apt install -y libjansson-dev libboost-dev imagemagick libtinyxml-dev mercurial cmake build-essential
+
+Next install nodejs and npm using node's version manager nvm:
+# FIXME: why the old one? we are at 0.39.4 today.
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+# source .bashrc so we can use the nvm cmd
+source ~/.bashrc
+# install node. Supported versions are 8 to 11. 
+nvm install 8
+
+cd ~; git clone https://github.com/osrf/gzweb
+cd ~/gzweb
+git checkout gzweb_1.4.1
+source /usr/share/gazebo/setup.sh
+# source <YOUR_GAZEBO_PATH>/share/gazebo/setup.sh
+npm run deploy --- -m
+gzserver --verbose	# is this blocking, or in background.?
+npm start		# port 8080
+
+## end gzweb
+
 
 
 Einrichten ROS Workspace
@@ -34,6 +64,6 @@ echo "source $source_cmd" >> ~/env
 cat <<EOF
 To start this service, open a fresh shell, and do
 
-	$run_cmd
+	source ~/env; $run_cmd
 
 EOF

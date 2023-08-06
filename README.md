@@ -4,7 +4,7 @@
 
 One click install: 
 
-	wget http://bit.ly/pibSetup | bash
+	`wget http://bit.ly/pib-setup | bash`
 
 The setup-pib.sh script assumes (e.g. as a VM in virtualbox): 
 - That Ubuntu Desktop 22.04.2 LTS is installed
