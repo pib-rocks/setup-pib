@@ -227,9 +227,6 @@ cp ros_motorcontrol_boot.service /etc/systemd/system
 chmod 755 /etc/systemd/system/ros_motorcontrol_boot.service
 sudo systemctl enable ros_motorcontrol_boot.service
 
-cd ..
-
-# ros2 run cerebra motor_control
 
 cd ..
 
