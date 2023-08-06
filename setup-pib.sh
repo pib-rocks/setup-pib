@@ -23,6 +23,8 @@ CEREBRA_ARCHIVE_NAME="cerebra-latest.zip"
 SETUP_PIB_ARCHIVE_URL_PATH="https://codeload.github.com/jnweiger/setup-pib/zip/refs/heads/main"
 SETUP_PIB_ARCHIVE_NAME="setup-pib-main.zip"
 #
+SETUP_DIGITAL_TWIN_URL_PATH="https://raw.githubusercontent.com/jnweiger/setup-pib/main/setup-digital-twin.sh"
+#
 ROS_CAMERA_NODE_LINK="https://github.com/pib-rocks/ros2_oak_d_lite/archive/refs/heads/master.zip"
 ROS_CAMERA_NODE_DIR="$ROS_WORKING_DIR/ros_camera_node_dir"
 ROS_CAMERA_NODE_ZIP="ros_camera_node.zip"
@@ -199,10 +201,24 @@ echo -e '\nPlease restart the system to apply changes...'
 echo source $source_cmd >> ~/.bashrc
 
 mkdir -p ~/_init_ws/install
+# Place our setup.bash also in a (dummy) workspace, so that the env script finds it too.
 ln -s /opt/ros/humble/setup.bash ~/_init_ws/install
 
+cat <<'EOS' > $source_cmd
+#! /bin/sh 
 
-### Motor_control setup
+export LC_COLLATE=C	
+# Just to be safe, tweak collate to have _init_ws before aaa_ws, but after 123_ws
+# We assume the exact order does not matter.
+cd ~
+for sauce in *_ws/install/setup.bash; do
+  echo "... sourcing $sauce"
+  source $sauce
+done
+EOS
+
+
+### Motor_control setup (should this be a script on its own?)
 # FROM: https://github.com/mazeninvent/pib-motor_control
 
 run_cmd="ros2 run cerebra motor_control"
@@ -245,16 +261,15 @@ Motor_control via cereba setup can be reached at http://localhost/head"
 EOF
 
 
+## Setup digital twin: both gazebo and gzweb,
+if [ ! -f $scriptdir/setup-digial-twin.sh]; then
+  # not a full github checkout, downloading th digital twin setup script.
+  wget $SETUP_DIGITAL_TWIN_URL_PATH -O $scriptdir/setup-digial-twin.sh
+fi
 
-cat <<'EOS' > $source_cmd
-#! /bin/sh 
+echo "run setup-digial-twin.sh (Y/n)?"
+read a
+if [ -z "$a" -o "$a" = "y" -o "$a" = "Y" ]; then
+  bash $scriptdir/setup-digial-twin.sh
+fi
 
-export LC_COLLATE=C	
-# Just to be safe, tweak collate to have _init_ws before aaa_ws, but after 123_ws
-# We assume the exact order does not matter.
-cd ~
-for sauce in *_ws/install/setup.bash; do
-  echo "... sourcing $sauce"
-  source $sauce
-done
-EOS
