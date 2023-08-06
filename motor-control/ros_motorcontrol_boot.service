@@ -1,0 +1,11 @@
+[Unit]
+Description=Startup script for ROS and Cerebra and Mazen's Motor Control
+After=network.target
+
+[Service]
+Type=simple
+User=pib
+ExecStart=/usr/bin/bash /home/pib/ros_working_dir/ros_motorcontrol_boot.sh
+
+[Install]
+WantedBy=multi-user.target

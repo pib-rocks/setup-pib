@@ -20,6 +20,9 @@ NGINX_CONF_FILE_URL="https://raw.githubusercontent.com/pib-rocks/setup-pib/main/
 CEREBRA_ARCHIVE_URL_PATH="https://pib.rocks/wp-content/uploads/pib_data/cerebra-latest.zip"
 CEREBRA_ARCHIVE_NAME="cerebra-latest.zip"
 #
+SETUP_PIB_ARCHIVE_URL_PATH="https://codeload.github.com/jnweiger/setup-pib/zip/refs/heads/main"
+SETUP_PIB_ARCHIVE_NAME="setup-pib-main.zip"
+#
 ROS_CAMERA_NODE_LINK="https://github.com/pib-rocks/ros2_oak_d_lite/archive/refs/heads/master.zip"
 ROS_CAMERA_NODE_DIR="$ROS_WORKING_DIR/ros_camera_node_dir"
 ROS_CAMERA_NODE_ZIP="ros_camera_node.zip"
@@ -59,6 +62,8 @@ else
 	echo "For this change please enter the root-password. It is most likely just your normal one..."
 	su root bash -c "usermod -aG sudo $DEFAULT_USER ; echo '$DEFAULT_USER ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/$DEFAULT_USER"
 fi
+#
+scriptdir="$(readlink -f $(basename $0))"
 # Adding Universe repo, upgrading and installing basic packages
 sudo add-apt-repository -y universe
 sudo apt-get update
@@ -204,12 +209,29 @@ run_cmd="ros2 run cerebra motor_control"
 
 mkdir -p ~/motor_control_ws
 cd ~/motor_control_ws
-git clone https://github.com/mazeninvent/pib-motor_control.git
+if [ -d "$scriptdir/motor_control" ]; thn
+  # we seem to have a full git checkout here...
+  ln -s $scriptdir/motor_control .
+else
+  # we pull a zip and unpack
+  wget $SETUP_PIB_ARCHIVE_URL_PATH -O $SETUP_PIB_ARCHIVE_NAME
+  unzip $SETUP_PIB_ARCHIVE_NAME -d setup-pib-main
+  mv setup-pib-main/*/motor-control .
+  rm -rf setup-pib-main $SETUP_PIB_ARCHIVE_NAME
+fi
+
+# FIXME: there seems to be a variable AMENT_PREFIX_PATH, can we use it for something 
 colcon build --packages-select cerebra
+
+cp ros_motorcontrol_boot.service /etc/systemd/system
+chmod 755 /etc/systemd/system/ros_motorcontrol_boot.service
+sudo systemctl enable ros_motorcontrol_boot.service
+
 cd ..
-echo source $source_cmd >> ~/.bashrc
 
 # ros2 run cerebra motor_control
+
+cd ..
 
 cat <<EOF
 Before using this service, edit 
