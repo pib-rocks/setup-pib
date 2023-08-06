@@ -25,14 +25,17 @@ for srv in $well_known_services $ros_services; do
   done
 done
 
+echo "Services found: $all_service_files"
+
 for file in $all_service_files; do
   start_cmd=$(sed -ne 's/^ExecStart=//p' $file)
   echo "-------------------------"
-  echo "Start this service? (Y/n): $start_cmd & "
+  echo "Start this service? (Y/n):"
+  echo "    $start_cmd & "
   # FIXME: This needs safeguard against duplicate starts.
   #        Dummy implementation: ask a human.
   read a
-  if [ -z "$a" -o "$a" = "y" -o "$a" = "Y" ];
+  if [ -z "$a" -o "$a" = "y" -o "$a" = "Y" ]; then
     nohup $start_cmd &
   fi
 done
