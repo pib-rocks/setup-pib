@@ -196,6 +196,37 @@ echo source $source_cmd >> ~/.bashrc
 mkdir -p ~/_init_ws/install
 ln -s /opt/ros/humble/setup.bash ~/_init_ws/install
 
+
+### Motor_control setup
+# FROM: https://github.com/mazeninvent/pib-motor_control
+
+run_cmd="ros2 run cerebra motor_control"
+
+mkdir -p ~/motor_control_ws
+cd ~/motor_control_ws
+git clone https://github.com/mazeninvent/pib-motor_control.git
+colcon build --packages-select cerebra
+cd ..
+echo source $source_cmd >> ~/.bashrc
+
+# ros2 run cerebra motor_control
+
+cat <<EOF
+Before using this service, edit 
+	~/motor_control_ws/src/cerebra/cerebra/motor_control.py
+Change UID, UID1, UID2 and UID3 of hat brick and bricklets retrieved from brickviewer (lines 3,4,5,6 in code)
+Then recompile with:		
+	( cd ~/motor_control_ws; colcon build --packages-select cerebra )
+
+To start this service, open a fresh shell, and do
+
+	source ~/env; $run_cmd
+
+Motor_control via cereba setup can be reached at http://localhost/head"
+EOF
+
+
+
 cat <<'EOS' > $source_cmd
 #! /bin/sh 
 
