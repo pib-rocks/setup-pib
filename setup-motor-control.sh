@@ -7,6 +7,7 @@
 
 source_cmd=/home/pib/motor_control_ws/install/setup.bash
 run_cmd="ros2 run cerebra motor_control"
+if [ ! -f ~/env ]; then echo "Please run first: bash ./setup-pib.sh"; exit 0; fi
 if grep -q "^source $source_cmd" ~/.bashrc; then
         echo "$0: This script was already run. If you really need to re-run this script, remove the line '$source_cmd' from your ~/.bashrc"
         echo "To start the motor-control, try: $run_cmd"
@@ -19,7 +20,6 @@ git clone https://github.com/mazeninvent/pib-motor_control.git
 colcon build --packages-select cerebra
 cd ..
 echo source $source_cmd >> ~/.bashrc
-source $source_cmd
 
 # ros2 run cerebra motor_control
 

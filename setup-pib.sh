@@ -4,6 +4,9 @@
 #   - that Ubuntu Desktop 22.04.2 is installed
 #   - the default-user "pib" is executing it
 #
+# 
+set -e	# make the script explode on error.
+
 DEFAULT_USER="pib"
 USER_HOME="/home/$DEFAULT_USER"
 ROS_WORKING_DIR="$USER_HOME/ros_working_dir"
@@ -33,15 +36,24 @@ DATABASE_INIT_QUERY_LINK="https://raw.githubusercontent.com/pib-rocks/setup-pib/
 #
 # We make sure that this script is run by the user "pib"
 if [ "$(whoami)" != "pib" ]; then
-        echo "This script must be run as user: pib"
+        echo "This script must be run as user: pib, create this user e.g with:"
         exit 255
 fi
 
-source_cmd=/opt/ros/humble/setup.bash
+source_cmd=home/pib/env
 if grep -q '^source $source_cmd' ~/.bashrc; then
         echo "$0: This script was already run. If you really need to re-run this scrpt, remove the line 'source $source_cmd' from your ~/.bashrc"
 	exit 1
 fi
+
+source2_cmd=/opt/ros/humble/setup.bash
+if [ ! -f ~/env ]; then
+  echo "source $source2_cmd" > ~/env
+fi
+
+if ! grep -q 'source $source2_cmd' ~/env; then
+  echo "source $source2_cmd" >> ~/env
+
 
 # We want the user pib to setup things without password (sudo without password)
 # Yes, we are aware of the security-issues..
@@ -186,5 +198,4 @@ echo -e '\nCongratulations! The setup completed succesfully!'
 echo -e '\nPlease restart the system to apply changes...'
 
 echo source $source_cmd >> ~/.bashrc
-source $source_cmd
 

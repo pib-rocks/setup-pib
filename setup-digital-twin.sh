@@ -3,8 +3,9 @@
 
 source_cmd=/home/pib/ros2_ws/install/setup.bash
 run_cmd="ros2 launch pib_sim pib.launch.py"
-if grep -q "^source $source_cmd" ~/.bashrc; then
-        echo "$0: This script was already run. If you really need to re-run this script, remove the line '$source_cmd' from your ~/.bashrc"
+if [ ! -f ~/env ]; then echo "Please run first: bash ./setup-pib.sh"; exit 0; fi
+if grep -q "^source $source_cmd" ~/env; then
+        echo "$0: This script was already run. If you really need to re-run this script, remove the line '$source_cmd' from your ~/env"
         echo "To start the digital-twin, try: $run_cmd"
 	exit 1
 fi

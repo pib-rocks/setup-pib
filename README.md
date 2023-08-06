@@ -2,6 +2,10 @@
 
 ### CAUTION: Keep in sync with https://pib.rocks/build/how-to-install-a-digital-twin-of-pib/
 
+One click install: 
+
+	wget http://bit.ly/pibSetup | bash
+
 The setup-pib.sh script assumes (e.g. as a VM in virtualbox): 
 - That Ubuntu Desktop 22.04.2 LTS is installed
   E.g. from https://www.releases.ubuntu.com/22.04/ubuntu-22.04.2-desktop-amd64.iso	(4.6 GB)
@@ -13,6 +17,14 @@ The setup-pib.sh script assumes (e.g. as a VM in virtualbox):
 If you have not set up the user **pib** at installation, you can do so via the settings-dialog of Ubuntu and then log in as **pib**.
 
 ## Running the script
+
+
+Fixme: 
+- Simplify the start of this README. Move user details into setup-pib.sh
+- define the three user scenarios that this script must pass:
+  1) Virtualbox with (*) skip automated install (user pib has no implicit sudo power)
+  2) Virtualbox without ( ) skip automated install (user is pib already has implicit sudo power)
+  3) Docker (user is root, pib must be created)
 
 To run the script do the next steps:
 
