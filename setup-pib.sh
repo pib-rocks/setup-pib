@@ -11,6 +11,7 @@
 export RED_TEXT_COLOR="\e[31m"
 export YELLOW_TEXT_COLOR="\e[33m"
 export GREEN_TEXT_COLOR="\e[32m"
+export CYAN_TEXT_COLOR="\e[36m"
 export RESET_TEXT_COLOR="\e[0m"
 export NEW_LINE="\n"
 
@@ -83,9 +84,6 @@ chmod 755 "$GET_SETUP_FILES_SCRIPT"
 source "$GET_SETUP_FILES_SCRIPT"
 
 # Variables for user input options and arguments
-export FIRST_USER_INPUT=$1
-export SECOND_USER_INPUT=$2
-export THIRD_USER_INPUT=$3
 export is_dev_mode="$FALSE"
 export user_default_branch=""
 export user_feature_branch=""
