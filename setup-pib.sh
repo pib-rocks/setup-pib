@@ -42,6 +42,10 @@ else
 	su root bash -c "usermod -aG sudo $DEFAULT_USER ; echo '$DEFAULT_USER ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/$DEFAULT_USER"
 fi
 
+# Redirect console output to a log file
+LOG_FILE="$USER_HOME/setup-pib.log"
+exec > >(tee -a "$LOG_FILE") 2>&1
+
 # Activate automatic login settings via regex
 sudo sed -i '/#  AutomaticLogin/{s/#//;s/user1/pib/}' /etc/gdm3/custom.conf
 
@@ -154,6 +158,9 @@ sudo systemctl daemon-reload
 sudo systemctl enable ros_cerebra_boot.service
 # Enable and start ssh server
 sudo systemctl enable ssh --now
+
+# Move log file to temporary setup folder
+mv "$LOG_FILE" "$TEMPORARY_SETUP_DIR"
 
 echo -e "$NEW_LINE""Congratulations! The setup completed succesfully!"
 echo -e "$NEW_LINE""Please restart the system to apply changes..."
