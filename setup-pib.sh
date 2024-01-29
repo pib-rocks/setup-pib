@@ -58,7 +58,7 @@ gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'no
 gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'nothing'
 
 # Create temporary directory for installation files
-export TEMPORARY_SETUP_DIR="$(mktemp --directory /tmp/pib-temp.XXX)"
+export TEMPORARY_SETUP_DIR="$(mktemp --directory /var/tmp/pib-temp.XXX)"
 
 # Installation folder will be created inside the temporary directory.
 # The folder name is dependend on the corresponding branch, so it's defined after the branch check.
