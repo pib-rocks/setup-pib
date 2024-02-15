@@ -29,8 +29,6 @@ export DEFAULT_USER="pib"
 export USER_HOME="/home/$DEFAULT_USER"
 export ROS_WORKING_DIR="$USER_HOME/ros_working_dir"
 mkdir "$ROS_WORKING_DIR"
-mkdir "$ROS_WORKING_DIR"/src
-mkdir "$USER_HOME/cerebra_programs"
 
 # We want the user pib to setup things without password (sudo without password)
 # Yes, we are aware of the security-issues..
@@ -61,6 +59,7 @@ readonly DATATYPES_ORIGIN="https://github.com/pib-rocks/datatypes.git"
 readonly MOTORS_ORIGIN="https://github.com/pib-rocks/motors.git"
 readonly OAK_D_LITE_ORIGIN="https://github.com/pib-rocks/ros2_oak_d_lite.git"
 readonly VOICE_ASSISTANT_ORIGIN="https://github.com/pib-rocks/voice-assistant.git"
+readonly PROGRAMS_ORIGIN="https://github.com/pib-rocks/programs.git"
 
 # The help function shows infos about the command-line parameter options, then exits the script
 show_help() 
@@ -173,12 +172,15 @@ readonly ROS_CEREBRA_BOOT_URL="https://raw.githubusercontent.com/pib-rocks/setup
 readonly ROS_CEREBRA_BOOT_SERVICE_URL="https://raw.githubusercontent.com/pib-rocks/setup-pib/""${repo_map[$SETUP_PIB_ORIGIN]}""/setup_files/ros_cerebra_boot.service"
 
 # install update-pip
-if [ -f "$USER_HOME""/update-pib.sh" ]; then
-  sudo rm update-pib.sh
+UPDATE_SCRIPT_PATH="$USER_HOME""/update-pib.sh"
+
+if [ -f "$UPDATE_SCRIPT_PATH" ]; then
+  sudo rm "$UPDATE_SCRIPT_PATH"
 fi
-curl "$ROS_UPDATE_URL" --location --output "$USER_HOME""/update-pib.sh"
-sudo chmod 777 update-pib.sh
-echo "if [ -f /home/pib/update-pib.sh ]; then
+
+curl "$ROS_UPDATE_URL" --location --output "$UPDATE_SCRIPT_PATH"
+sudo chmod 777 "$UPDATE_SCRIPT_PATH"
+echo "if [ -f $UPDATE_SCRIPT_PATH ]; then
         alias update-pib='/home/pib/update-pib.sh'
       fi
 " >> $USER_HOME/.bashrc
@@ -201,6 +203,9 @@ sudo systemctl daemon-reload
 sudo systemctl enable ros_cerebra_boot.service
 # Enable and start ssh server
 sudo systemctl enable ssh --now
+
+# Download animated pib eyes
+curl --location --output ~/Desktop/pib-eyes-animated.gif "https://raw.githubusercontent.com/pib-rocks/setup-pib/""${repo_map[$SETUP_PIB_ORIGIN]}""/setup_files/pib-eyes-animated.gif"
 
 # Move log file to temporary setup folder
 mv "$LOG_FILE" "$TEMPORARY_SETUP_DIR"
