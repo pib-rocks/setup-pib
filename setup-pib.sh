@@ -151,7 +151,8 @@ sudo systemctl enable ssh --now
 curl --location --output ~/Desktop/pib-eyes-animated.gif "https://raw.githubusercontent.com/pib-rocks/setup-pib/""${repo_map[$SETUP_PIB_ORIGIN]}""/setup_files/pib-eyes-animated.gif"
 
 # Delete unnecessary apps
-sudo apt-get purge -y thunderbird* "libreoffice*" aisleriot gnome-sudoku ace-of-penguins gbrainy gnome-mines gnome-mahjongg
+sudo apt-get purge -y "thunderbird*" "libreoffice*" aisleriot gnome-sudoku ace-of-penguins gbrainy gnome-mines gnome-mahjongg
+sudo apt-get autoclean
 
 echo -e "$NEW_LINE""Congratulations! The setup completed succesfully!"
 echo -e "$NEW_LINE""Please restart the system to apply changes..."
