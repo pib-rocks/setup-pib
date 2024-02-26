@@ -140,7 +140,7 @@ export TEMPORARY_SETUP_DIR="$(mktemp --directory /var/tmp/pib-temp.XXX)"
 readonly GET_SETUP_FILES_SCRIPT_NAME="get_setup_files.sh"
 readonly GET_SETUP_FILES_SCRIPT="$TEMPORARY_SETUP_DIR""/$GET_SETUP_FILES_SCRIPT_NAME"
 curl "https://raw.githubusercontent.com/pib-rocks/setup-pib/""$SETUP_PIB_BRANCH""/installation_scripts/""$GET_SETUP_FILES_SCRIPT_NAME" --location --output "$GET_SETUP_FILES_SCRIPT" 
-chmod 755 "$GET_SETUP_FILES_SCRIPT"
+chmod 700 "$GET_SETUP_FILES_SCRIPT"
 source "$GET_SETUP_FILES_SCRIPT"
 
 # Create an associative array (=map). This will be filled with repo-origin branch-name pairs in the check_github_branches.sh script
@@ -179,7 +179,7 @@ if [ -f "$UPDATE_SCRIPT_PATH" ]; then
 fi
 
 curl "$ROS_UPDATE_URL" --location --output "$UPDATE_SCRIPT_PATH"
-sudo chmod 777 "$UPDATE_SCRIPT_PATH"
+sudo chmod 700 "$UPDATE_SCRIPT_PATH"
 echo "if [ -f $UPDATE_SCRIPT_PATH ]; then
         alias update-pib='/home/pib/update-pib.sh'
       fi
@@ -191,11 +191,11 @@ curl "$ROS_CONFIG_URL" --location --output "$ROS_WORKING_DIR/ros_config.sh"
 # Setup system to start Cerebra and ROS2 at boot time
 # Create boot script for ros_bridge_server
 curl "$ROS_CEREBRA_BOOT_URL" --location --output  "$ROS_WORKING_DIR/ros_cerebra_boot.sh" 
-sudo chmod 755 $ROS_WORKING_DIR/ros_cerebra_boot.sh
+sudo chmod 700 $ROS_WORKING_DIR/ros_cerebra_boot.sh
 
 # Create service which starts ros and cerebra by system boot
 curl "$ROS_CEREBRA_BOOT_SERVICE_URL" --location --output "$ROS_WORKING_DIR/ros_cerebra_boot.service" 
-sudo chmod 755 $ROS_WORKING_DIR/ros_cerebra_boot.service
+sudo chmod 700 $ROS_WORKING_DIR/ros_cerebra_boot.service
 sudo mv $ROS_WORKING_DIR/ros_cerebra_boot.service /etc/systemd/system
 
 # Enable new services

@@ -9,8 +9,8 @@ echo -e "$YELLOW_TEXT_COLOR""-- Creating .gitmodule file --""$RESET_TEXT_COLOR""
 readonly GIT_PROJECT_DIR="$ROS_WORKING_DIR""/src/"
 
 # Setup ros-workspace
-sudo chmod -R 775 "$ROS_WORKING_DIR"
-sudo chmod -R 775 "$GIT_PROJECT_DIR"
+sudo chmod -R 700 "$ROS_WORKING_DIR"
+sudo chmod -R 700 "$GIT_PROJECT_DIR"
 
 # Initialize a git repo
 echo 'check if git init is done'
@@ -37,7 +37,7 @@ readonly DATATYPES_GITMODULE="[submodule \"$DATATYPES_PACKAGE_NAME\"]\n\t path =
 readonly OAK_D_LITE_GITMODULE="[submodule \"$OAK_D_LITE_PACKAGE_NAME\"]\n\t path = $OAK_D_LITE_PACKAGE_NAME\n\t url = $OAK_D_LITE_ORIGIN\n\t branch = ${repo_map[$OAK_D_LITE_ORIGIN]}\n"
 
 # Overwrite the .gitmodules file
-chmod 755 "$GIT_PROJECT_DIR"".gitmodules"
+chmod 700 "$GIT_PROJECT_DIR"".gitmodules"
 readonly GITMODULE_FILE_CONTENT="$VOICE_ASSISTANT_GITMODULE""$PROGRAMS_GITMODULE""$MOTORS_GITMODULE""$DATATYPES_GITMODULE""$OAK_D_LITE_GITMODULE"
 echo -e $GITMODULE_FILE_CONTENT > "$GIT_PROJECT_DIR"".gitmodules"
 

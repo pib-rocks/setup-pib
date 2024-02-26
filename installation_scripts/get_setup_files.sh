@@ -16,6 +16,6 @@ unzip "$TEMPORARY_SETUP_DIR/""$SETUP_ARCHIVE_NAME" -d "$TEMPORARY_SETUP_DIR"
 installation_files_dir="$TEMPORARY_SETUP_DIR/""setup-pib-""$SETUP_PIB_BRANCH""/installation_scripts"
 
 # Change permissions for all files in temp folder
-chmod --recursive 775 "$TEMPORARY_SETUP_DIR"
+chmod --recursive 700 "$TEMPORARY_SETUP_DIR"
 
 echo -e "$NEW_LINE""$GREEN_TEXT_COLOR""-- Setup file download completed --""$RESET_TEXT_COLOR""$NEW_LINE"

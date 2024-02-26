@@ -38,11 +38,11 @@ git clone "$ROS_PACKAGES_ORIGIN"
 mv "$ROS_WORKING_DIR""/ros-packages" "$ROS_WORKING_DIR""/src"
 cd "$ROS_WORKING_DIR""/src"
 git checkout ${repo_map["$ROS_PACKAGES_ORIGIN"]}
-sudo chmod -R 777 "$ROS_WORKING_DIR"
+sudo chmod -R 700 "$ROS_WORKING_DIR"
 
 # Run the script for creating a custom gitmodules file
 readonly CREATE_GITMODULE_FILE_SCRIPT="$installation_files_dir""/create_gitmodule_file.sh"
-chmod 755 "$CREATE_GITMODULE_FILE_SCRIPT"
+chmod 700 "$CREATE_GITMODULE_FILE_SCRIPT"
 source "$CREATE_GITMODULE_FILE_SCRIPT"
 
 # Pull all repo branches as specified in the gitmodules file
@@ -60,7 +60,7 @@ touch "$VOICE_ASSISTANT_CREDENTIALS_DIR""/google-key"
 sudo apt-get install -y python3.10-venv
 readonly USER_PROGRAM_ENV_DIR="$ROS_WORKING_DIR/src/programs/user_program_env"
 mkdir "$USER_PROGRAM_ENV_DIR"
-sudo chmod 755 "$USER_PROGRAM_ENV_DIR"
+sudo chmod 700 "$USER_PROGRAM_ENV_DIR"
 python3 -m venv "$USER_PROGRAM_ENV_DIR"
 source "$USER_PROGRAM_ENV_DIR/bin/activate"
 python3 -m pip install numpy==1.26.3
@@ -71,45 +71,45 @@ deactivate
 echo "Booting all nodes..."
 
 # Boot camera
-sudo chmod 755 "$ROS_CAMERA_BOOT_DIR""/ros_camera_boot.sh"
-sudo chmod 755 "$ROS_CAMERA_BOOT_DIR""/ros_camera_boot.service"
+sudo chmod 700 "$ROS_CAMERA_BOOT_DIR""/ros_camera_boot.sh"
+sudo chmod 700 "$ROS_CAMERA_BOOT_DIR""/ros_camera_boot.service"
 sudo mv "$ROS_CAMERA_BOOT_DIR""/ros_camera_boot.service" /etc/systemd/system
 sudo systemctl enable ros_camera_boot.service
 
 # Boot bricklet uid script
-sudo chmod 755 "$ROS_WORKING_DIR""/src/motors/utils/update_bricklet_uids.py"
-sudo chmod 755 "$ROS_MOTORS_BOOT_DIR""/bricklet_uid_boot.service"
+sudo chmod 700 "$ROS_WORKING_DIR""/src/motors/utils/update_bricklet_uids.py"
+sudo chmod 700 "$ROS_MOTORS_BOOT_DIR""/bricklet_uid_boot.service"
 sudo mv "$ROS_MOTORS_BOOT_DIR""/bricklet_uid_boot.service" /etc/systemd/system
 sudo systemctl enable bricklet_uid_boot.service
 
 # Boot motor control node
 pip install "$ROS_WORKING_DIR""/src/motors/pib_motors"
-sudo chmod 755 "$ROS_MOTORS_BOOT_DIR""/ros_motor_control_node_boot.sh"
-sudo chmod 755 "$ROS_MOTORS_BOOT_DIR""/ros_motor_control_node_boot.service"
+sudo chmod 700 "$ROS_MOTORS_BOOT_DIR""/ros_motor_control_node_boot.sh"
+sudo chmod 700 "$ROS_MOTORS_BOOT_DIR""/ros_motor_control_node_boot.service"
 sudo mv "$ROS_MOTORS_BOOT_DIR""/ros_motor_control_node_boot.service" /etc/systemd/system
 sudo systemctl enable ros_motor_control_node_boot.service
 
 # Boot motor current node
-sudo chmod 755 "$ROS_MOTORS_BOOT_DIR""/ros_motor_current_node_boot.sh"
-sudo chmod 755 "$ROS_MOTORS_BOOT_DIR""/ros_motor_current_node_boot.service"
+sudo chmod 700 "$ROS_MOTORS_BOOT_DIR""/ros_motor_current_node_boot.sh"
+sudo chmod 700 "$ROS_MOTORS_BOOT_DIR""/ros_motor_current_node_boot.service"
 sudo mv "$ROS_MOTORS_BOOT_DIR""/ros_motor_current_node_boot.service" /etc/systemd/system
 sudo systemctl enable ros_motor_current_node_boot.service
 
 # Boot voice-assistant
-sudo chmod 755 "$ROS_VOICE_ASSISTANT_BOOT_DIR""/ros_voice_assistant_boot.sh"
-sudo chmod 755 "$ROS_VOICE_ASSISTANT_BOOT_DIR""/ros_voice_assistant_boot.service"
+sudo chmod 700 "$ROS_VOICE_ASSISTANT_BOOT_DIR""/ros_voice_assistant_boot.sh"
+sudo chmod 700 "$ROS_VOICE_ASSISTANT_BOOT_DIR""/ros_voice_assistant_boot.service"
 sudo mv "$ROS_VOICE_ASSISTANT_BOOT_DIR""/ros_voice_assistant_boot.service" /etc/systemd/system
 sudo systemctl enable ros_voice_assistant_boot.service
 
 # Boot program node
-sudo chmod 755 "$ROS_PROGRAMS_BOOT_DIR""/ros_program_boot.sh"
-sudo chmod 755 "$ROS_PROGRAMS_BOOT_DIR""/ros_program_boot.service"
+sudo chmod 700 "$ROS_PROGRAMS_BOOT_DIR""/ros_program_boot.sh"
+sudo chmod 700 "$ROS_PROGRAMS_BOOT_DIR""/ros_program_boot.service"
 sudo mv "$ROS_PROGRAMS_BOOT_DIR""/ros_program_boot.service" /etc/systemd/system
 sudo systemctl enable ros_program_boot.service
 
 # Boot program proxy node
-sudo chmod 755 "$ROS_PROGRAMS_BOOT_DIR""/ros_proxy_program_boot.sh"
-sudo chmod 755 "$ROS_PROGRAMS_BOOT_DIR""/ros_proxy_program_boot.service"
+sudo chmod 700 "$ROS_PROGRAMS_BOOT_DIR""/ros_proxy_program_boot.sh"
+sudo chmod 700 "$ROS_PROGRAMS_BOOT_DIR""/ros_proxy_program_boot.service"
 sudo mv "$ROS_PROGRAMS_BOOT_DIR""/ros_proxy_program_boot.service" /etc/systemd/system
 sudo systemctl enable ros_proxy_program_boot.service
 

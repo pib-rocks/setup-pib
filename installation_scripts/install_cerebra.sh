@@ -59,7 +59,7 @@ sudo sed -i "s|;cgi.fix_pathinfo=1|cgi.fix_pathinfo=0|" /etc/php/8.1/fpm/php.ini
 curl "$PHPLITEADMIN_URL" --location --output "$TEMPORARY_SETUP_DIR/$PHPLITEADMIN_ZIP"
 sudo mkdir $PHPLITEADMIN_INSTALLATION_DIR
 sudo chown -R www-data:www-data $PHPLITEADMIN_INSTALLATION_DIR
-sudo chmod -R 755 $PHPLITEADMIN_INSTALLATION_DIR
+sudo chmod -R 700 $PHPLITEADMIN_INSTALLATION_DIR
 sudo unzip "$TEMPORARY_SETUP_DIR/$PHPLITEADMIN_ZIP" -d $PHPLITEADMIN_INSTALLATION_DIR
 sudo systemctl restart php8.1-fpm
 
@@ -67,8 +67,8 @@ sudo systemctl restart php8.1-fpm
 curl "$DATABASE_INIT_QUERY_URL" --location --output "$TEMPORARY_SETUP_DIR/$DATABASE_INIT_QUERY_FILE"
 echo "Creating (if not exist) and initializing SQLite database $DATABASE_FILE with $TEMPORARY_SETUP_DIR/$DATABASE_INIT_QUERY_FILE..."
 mkdir $DATABASE_DIR
-sudo chmod 777 $USER_HOME
-sudo chmod 777 $DATABASE_DIR
+sudo chmod 700 $USER_HOME
+sudo chmod 700 $DATABASE_DIR
 sudo sqlite3 "$DATABASE_DIR/$DATABASE_FILE" < "$TEMPORARY_SETUP_DIR/$DATABASE_INIT_QUERY_FILE"
 sudo chmod 766 $DATABASE_DIR/$DATABASE_FILE
 echo -e "$NEW_LINE""Database initialized successfully!"
